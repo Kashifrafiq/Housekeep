@@ -22,7 +22,7 @@ const HomeScreen = () => {
         <Text style={styles.dateText}>
           {date.day}, {date.month} {date.date}
         </Text>
-        <HomeList name={'Coastline Villas'} />
+        <HomeList name={'Coastline Villas'} /> 
         <HomeList name={'Delta Villas'} />
         <HomeList name={'Completed'} />
       </View>
