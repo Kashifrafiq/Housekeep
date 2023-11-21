@@ -14,6 +14,9 @@ export enum Routes {
   Properties = 'Properties',
   ReportIssue = 'ReportIssue',
   TakePayment = 'TakePayment',
+  CustomizeList = 'CustomizeList',
+  SortList = 'SortList',
+  PropertiesList = 'PropertiesList',
 }
 
 export default Routes

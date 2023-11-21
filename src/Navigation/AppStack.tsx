@@ -22,6 +22,9 @@ import AddNote from '../Screens/PrevSecreen/AddNote'
 import Rooms from '../Screens/PrevSecreen/Housekeeping/Rooms'
 import ReportIssue from '../Screens/PrevSecreen/Settings/ReportIssue'
 import TakePayment from '../Screens/PrevSecreen/TakePayment'
+import CustomizeList from '../Components/lists/CustomizeLists/CustomizeList'
+import SortList from '../Components/lists/CustomizeLists/SortList'
+import PropertiesList from '../Components/lists/CustomizeLists/PropertiesList'
 
 const Stack = createStackNavigator()
 
@@ -115,7 +118,10 @@ const AppStack = () => {
           ) : (
             <Stack.Group>
               <Stack.Screen name={Routes.Main} component={MainStack} />
-            
+              <Stack.Screen name={Routes.CustomizeList} component={CustomizeList} options={{headerShown: false}}/>
+              <Stack.Screen name={Routes.SortList} component={SortList} options={{headerShown: false}}/>
+              <Stack.Screen name={Routes.PropertiesList} component={PropertiesList} options={{headerShown: false}}/>
+
             </Stack.Group>
           )}
 

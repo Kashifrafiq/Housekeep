@@ -4,8 +4,17 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {COLORS} from '../../../../assets/colors/Colors';
 import SortIcon from '../../../../assets/icons/sort.png';
 import propertyIcon from '../../../../assets/icons/property.png'
+import { navigate } from '../../../Navigation/navigationUtils';
+import Routes from '../../../Navigation/routesNames';
 
 const CustomizeList = () => {
+
+  const onPressSort = () => {
+    navigate(Routes.SortList)
+  }
+  const onPressProperties = () => {
+    navigate(Routes.PropertiesList)
+  }
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -15,7 +24,7 @@ const CustomizeList = () => {
         </Pressable>
       </View>
       <View style={styles.listSection}>
-        <Pressable style={styles.listContainer}>
+        <Pressable style={styles.listContainer} onPress={onPressSort}>
           <View style={styles.listContainerRight}>
             <Image
               source={SortIcon}
@@ -27,7 +36,7 @@ const CustomizeList = () => {
           <Icon name={'chevron-small-right'} size={24} color={COLORS.black} />
         </Pressable>
 
-        <Pressable style={styles.listContainer}>
+        <Pressable style={styles.listContainer} onPress={onPressProperties}>
           <View style={styles.listContainerRight}>
             <Image
               source={propertyIcon}
@@ -56,7 +65,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-  },  headerText: {
+  },  
+  headerText: {
     fontSize: 18,
     fontWeight: '600',
     color: COLORS.black,
