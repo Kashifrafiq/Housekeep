@@ -10,11 +10,11 @@ import ManuallyIcon from '../../../../assets/icons/Manually.png';
 import { navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
 
-const SortList = () => {
+const SortList = ({rbSheetRef}) => {
     const onPressCustomizeList = () => {
-        navigate(Routes.CustomizeList)
-      }
-
+      rbSheetRef.current.close()
+    }
+      
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -23,8 +23,8 @@ const SortList = () => {
             <Icon name={'chevron-small-left'} size={24} color={COLORS.black} />
             </Pressable>
             <Text style={styles.headerText}>Sort by</Text>
-        </View>
-        <Pressable>
+        </View> 
+        <Pressable onPress={onPressCustomizeList}>
           <Icon name={'cross'} size={24} color={COLORS.black} />
         </Pressable>
       </View>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   line: {
     borderBottomColor: '#DDE0E4',
     borderBottomWidth: 1,
-    marginVertical: 10, // Adjust as needed
+    marginVertical: 10,
   },
   listSection: {
     width: '100%',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   listContainerRight: {
     flexDirection: 'row',
-    width: '50%',
+    width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center'
   },
@@ -147,5 +147,6 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: COLORS.black,
     marginLeft: 12,
+    width: '100%'
   }
 });

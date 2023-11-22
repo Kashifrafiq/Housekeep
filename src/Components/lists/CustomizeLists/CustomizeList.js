@@ -7,19 +7,20 @@ import propertyIcon from '../../../../assets/icons/property.png'
 import { navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
 
-const CustomizeList = () => {
+const CustomizeList = ({rbSheetRef, PropertiesListrbSheetRef}) => {
 
   const onPressSort = () => {
-    navigate(Routes.SortList)
+    rbSheetRef.current.open()
   }
   const onPressProperties = () => {
-    navigate(Routes.PropertiesList)
+    PropertiesListrbSheetRef.current.open()
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Customize List</Text>
-        <Pressable>
+        <Pressable >
           <Icon name={'cross'} size={24} color={COLORS.black} />
         </Pressable>
       </View>

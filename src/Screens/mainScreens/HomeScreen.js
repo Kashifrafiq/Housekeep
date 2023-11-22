@@ -8,11 +8,15 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import CustomizeList from '../../Components/lists/CustomizeLists/CustomizeList';
 
 import HomeList from '../../Components/lists/HomeList';
+import SortList from '../../Components/lists/CustomizeLists/SortList';
+import PropertiesList from '../../Components/lists/CustomizeLists/PropertiesList';
 
 
 const HomeScreen = () => {
   const date = getDatewithNames();
   const CLrbSheetRef = useRef();
+  const SortListrbSheetRef = useRef();
+  const PropertiesListrbSheetRef = useRef();
   return (
     <ImageBackground
       source={BackgroundImage}
@@ -30,8 +34,27 @@ const HomeScreen = () => {
       ref={CLrbSheetRef}
       animationType='slide'
       height={200}
+      customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
       >
-        <CustomizeList />
+        <CustomizeList rbSheetRef={SortListrbSheetRef} PropertiesListrbSheetRef={PropertiesListrbSheetRef}/>
+
+      </RBSheet>
+      <RBSheet
+      ref={SortListrbSheetRef}
+      animationType='fade'
+      height={400}
+      customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
+      >
+        <SortList rbSheetRef={SortListrbSheetRef}/>
+
+      </RBSheet>
+      <RBSheet
+      ref={PropertiesListrbSheetRef}
+      animationType='slide'
+      height={250}
+      customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
+      >
+        <PropertiesList rbSheetRef={PropertiesListrbSheetRef} />
 
       </RBSheet>
     </ImageBackground>
