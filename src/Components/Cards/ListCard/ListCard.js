@@ -9,9 +9,9 @@ import NotePoint from '../../../../assets/icons/pointYellow.png';
 import { navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
 
-const ListCard = () => {
-  const title = 'QS(201)';
-  const status = 'Occupied & Do not disturb ';
+const ListCard = ({title, status, doNotDisturb, roomOccupied}) => {
+ 
+
   const [turnover, setTurnover] = useState(true);
   const [completed, setCompleted] = useState(false);
   const [notes, setNotes] = useState(true);
@@ -63,8 +63,9 @@ const ListCard = () => {
                   }
                 : null,
             ]}>
-            {status}
+            { roomOccupied ? `Occupied`: null} {doNotDisturb ? `& Do not disturb` : null }
           </Text>
+          <Text style={styles.status}>{status}</Text>
         </View>
       </View>
       <View style={styles.rightConatiner}>

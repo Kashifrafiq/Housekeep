@@ -6,15 +6,29 @@ import ListCard from '../Cards/ListCard/ListCard';
 const HomeList = ({name, data}) => {
   const [openList, setOpenList] = useState(false);
   
-  console.log('Homelist' , data)
+
 
   return (
     <View style={styles.container}>
       <ListHeader title={name} openList={setOpenList} liststatus={openList} />
       {openList ? 
       <View>
-        <ListCard />
-        <ListCard />
+        <FlatList
+        data={data}
+        keyExtractor={(item)=> item.roomID}
+        scrollEnabled={false}
+        renderItem={({item})=>{
+            
+            return(
+              <ListCard title={item?.roomName} status={item?.frontdeskStatus} doNotDisturb={false} roomOccupied={true} />
+            )
+          
+        }
+        
+         
+        }
+         />
+        
        
       </View>
       

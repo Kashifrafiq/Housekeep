@@ -109,15 +109,17 @@ export default function useUser(refresh = false) {
 
         const hotels: PropertyProps[] =
           (await getHotels({ pageNumber: 1, pageSize: 100 })) || []
-          console.log('Result From Api:', hotels);
+         
 
         changeProperties(hotels || [])
-        console.log('Yes:', hotels)
+
+        
 
         const cProperty = hotels.find(
           h =>
             h?.propertyID?.toString() === filteredUser?.propertyId?.toString(),
         )
+        console.log('Yes:', hotels)
         
         changeCurrentProperty(cProperty!)
 

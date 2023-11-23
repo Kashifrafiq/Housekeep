@@ -13,6 +13,7 @@ import { RootState } from '../../store/store';
 import HomeList from '../../Components/lists/HomeList';
 import SortList from '../../Components/lists/CustomizeLists/SortList';
 import PropertiesList from '../../Components/lists/CustomizeLists/PropertiesList';
+import { ScrollView } from 'native-base';
 
 
 const HomeScreen = () => {
@@ -24,9 +25,8 @@ const HomeScreen = () => {
   const CLrbSheetRef = useRef();
   const rbSheetRef = useRef();
   const PropertiesListrbSheetRef = useRef();
-  const {currentHousekeepingstatus} = useSelector((state)=> state.housekeeping)
-  console.log('HomeScreen: ', currentHousekeepingstatus)
-
+  const {currentHousekeepingstatus, housekeepingstatus} = useSelector((state)=> state.housekeeping)
+ 
   return (
     <ImageBackground
       source={BackgroundImage}
@@ -36,9 +36,13 @@ const HomeScreen = () => {
         <Text style={styles.dateText}>
           {date.day}, {date.month} {date.date}
         </Text>
-        <HomeList name={'Coastline Villas'} data={currentHousekeepingstatus}/>
+        <ScrollView>
+        <HomeList name={'Coastline Villas'} data={housekeepingstatus}/>
         <HomeList name={'Delta Villas'} data={currentHousekeepingstatus} />
         <HomeList name={'Completed'} data={currentHousekeepingstatus} />
+        </ScrollView>
+        
+        
       </View>
       <RBSheet
       ref={CLrbSheetRef}
