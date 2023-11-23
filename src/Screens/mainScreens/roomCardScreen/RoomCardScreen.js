@@ -7,20 +7,24 @@ import {
   View
 } from 'react-native';
 // import CheckBox from 'react-native-check-box';
-import  {COLORS}  from '../../../../assets/colors/Colors';
+import { COLORS } from '../../../../assets/colors/Colors';
 import childrenCountIcon from '../../../../assets/icons/childrenCount.png';
 import nightsStandIcon from '../../../../assets/icons/nightsStand.png';
 import personCountIcon from '../../../../assets/icons/personCount.png';
+import LeftIcon from '../../../../assets/icons/arrowleft.png';
+import selectedIcon from '../../../../assets/icons/selectedIcon.png';
 import RoomCard from '../../../Components/Cards/RoomCard/RoomCard';
+import CheckBox from '@react-native-community/checkbox';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
 import DownIcon from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Feather';
+import { navigate } from '../../../Navigation/navigationUtils';
+import Routes from '../../../Navigation/routesNames';
 
-const RoomCardScreen = () => {
+const RoomCardScreen = (myDaySheetRef) => {
 
-
-  const [isChecked, setIsChecked] = useState(true);
+  const [isChecked, setIsChecked] = useState(false)
   const [isOccupied, setIsOccupied] = useState(true);
   const [isDirty, setIsDirty] = useState(true);
   const RoomComment = 'Shower is broken and in need of repair services.';
@@ -31,35 +35,50 @@ const RoomCardScreen = () => {
   const openBottomSheet = () => {
     bottomSheetRef.current.open();
   };
+  const onPressMyDay = () => {
+    navigate(Routes.Home)
+  }
   return (
-    <View style={{padding: 15}}>
+    <View style={{ padding: 15 }}>
       {/* <RoomCard /> */}
-      <RoomCard />
-      {/* CheckBoxes */}
-      {/* <View style={styles.CheckBoxes}>
+      <View style={styles.header}>
+        <View style={styles.listContainerRight}>
+          <Pressable onPress={onPressMyDay}>
+            <Image
+              source={LeftIcon}
+              style={styles.customIcon}
+              resizeMode="contain"
+            />
+          </Pressable>
+          <Text style={styles.headerText}>My day</Text>
+        </View>
+      </View>
+      <View style={{ paddingTop: 8 }}>
+
+        <RoomCard />
+      </View>
+      <View style={styles.container}>
         <View style={styles.DoNotDisturbCheckBox}>
           <CheckBox
-            checkBoxColor = "#3366FF"
-            isChecked={isChecked}
-            onClick={() => setIsChecked(!isChecked)}
-            style={{borderRadius: 5 }}
+            disabled={false}
+            value={isChecked}
+            tintColors={{ true: '#3366FF', false: '#3366FF' }}
+            onValueChange={(newValue) => setIsChecked(newValue)
+            }
           />
           <Text style={styles.DoNotDisturbText}>Do Not Disturb</Text>
         </View>
-
-        <View style={styles.OccupiedCheckBox}>
+        <View style={styles.DoNotDisturbCheckBox}>
           <CheckBox
-            checkBoxColor = "#3366FF"
-            isChecked={isOccupied}
-            onClick={() => setIsOccupied(!isOccupied)}
-            style={{borderRadius: 5, opacity: 0.6}}
-            disabled
+            disabled={true}
+            value={isOccupied}
+            tintColors={{ true: '#3366FF', false: '#3366FF' }}
+            onValueChange={(newValue1) => setIsOccupied(newValue1)}
+            style={{ opacity: 0.50 }}
           />
           <Text style={styles.DoNotDisturbText}>Occupied</Text>
         </View>
-      </View> */}
-
-      {/* Condition Drop Down  */}
+      </View>
       <View >
         <View style={styles.dropdownheading}>
           <Text style={styles.conditionHeading}>Condition</Text>
@@ -74,14 +93,13 @@ const RoomCardScreen = () => {
                 justifyContent: 'space-between',
                 width: '100%',
               }}>
-                {
-                  isDirty ?  <Text style={{fontSize: 14, color: COLORS.Lightning900}}>
+              {
+                isDirty ? <Text style={{ fontSize: 14, color: COLORS.Lightning900 }}>
                   Dirty
-                </Text> : <Text style={{fontSize: 14, color: COLORS.Lightning900}}>
+                </Text> : <Text style={{ fontSize: 14, color: COLORS.Lightning900 }}>
                   Clean
-                </Text> 
-                }
-             
+                </Text>
+              }
               <DownIcon name="chevron-down" size={14} color="black" />
             </View>
           </Pressable>
@@ -107,69 +125,68 @@ const RoomCardScreen = () => {
                 width: '100%',
               }}>
               <Text
-                style={{color: COLORS.black, fontSize: 18, fontWeight: '500'}}>
+                style={{ color: COLORS.black, fontSize: 18, fontWeight: '500' }}>
                 Condition
               </Text>
-              <Pressable onPress={()=>bottomSheetRef.current.close()}>
+              <Pressable onPress={() => bottomSheetRef.current.close()}>
                 <DownIcon name="cross" size={24} color="black" />
               </Pressable>
             </View>
-
-
             <View
               style={{
                 borderWidth: 0.18,
                 width: '100%',
                 marginLeft: 15,
                 backgroundColor: COLORS.fog300,
-              }}></View>
-
-
-            <Pressable onPress={()=> setIsDirty(false)}>
-              { 
-                <View style={{flexDirection: 'row', padding: 20}}>
-                  {
-                    isDirty ? null : 
-                     <Icon name="check" size={24} color="white" />
-
-                  }
-                 
-                  <Text
-                    style={[{
-                      color: COLORS.black,
-                      fontSize: 18,
-                      paddingLeft: 10,
-                    }, isDirty? null: {fontWeight: 'bold'}]}>
-                    Clean
-                  </Text>
-                </View>
-              }
-            </Pressable>
-
-            <Pressable onPress={() => setIsDirty(true)}>
-              {
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    paddingTop: 10,
-                    paddingLeft: 20,
-                  }}>
-                    {
-                      isDirty ? <Icon name="check" size={24} color="green" /> : null
-                    }
-                  
-                  <Text
-                    style={[{
-                      
-                      color: COLORS.black,
-                      fontSize: 18,
-                      paddingLeft: 10,
-                    },  isDirty? {fontWeight: 'bold',}: null   ]}>
-                    Dirty
-                  </Text>
-                </View>
-              }
-            </Pressable>
+              }}>
+            </View>
+            <View style={styles.listSection}>
+              <Pressable style={styles.listContainer} onPress={() => setIsDirty(false)}>
+                {
+                  <View style={styles.listContainerRight}>
+                    <View style={styles.tickContainer} >
+                      {
+                        isDirty ? null :
+                          <Image
+                            source={selectedIcon}
+                            style={styles.customIcon}
+                            resizeMode="contain" />
+                      }
+                    </View>
+                    <Text
+                      style={[{
+                        color: COLORS.black,
+                        fontSize: 18,
+                        paddingLeft: 10,
+                      }, isDirty ? null : { fontWeight: '700' }]}>
+                      Clean
+                    </Text>
+                  </View>
+                }
+              </Pressable>
+              <Pressable style={styles.listContainer} onPress={() => setIsDirty(true)}>
+                {
+                  <View style={styles.listContainerRight}>
+                    <View style={styles.tickContainer} >
+                      {
+                        isDirty ? <Image
+                          source={selectedIcon}
+                          style={styles.customIcon}
+                          resizeMode="contain" /> : null
+                      }
+                    </View>
+                    <Text
+                      style={[{
+                        color: COLORS.black,
+                        fontSize: 18,
+                        paddingLeft: 10,
+                      }, isDirty ? { fontWeight: '700', } : null]}>
+                      Dirty
+                    </Text>
+                  </View>
+                }
+              </Pressable>
+            </View>
           </RBSheet>
         </View>
       </View>
@@ -202,7 +219,7 @@ const RoomCardScreen = () => {
         <View style={styles.roomCommentheading}>
           <Text style={styles.roomCommentsText}>Room Comments</Text>
           <View style={styles.commentSection}>
-            <Text style={{fontSize: 14, color: COLORS.Lightning900, paddingHorizontal: 16, paddingVertical: 8, fontWeight: '400'}}>
+            <Text style={{ fontSize: 14, color: COLORS.Lightning900, paddingHorizontal: 16, paddingVertical: 8, fontWeight: '400' }}>
               {RoomComment}
             </Text>
           </View>
@@ -227,19 +244,24 @@ const styles = StyleSheet.create({
   },
   DoNotDisturbText: {
     fontSize: 14,
-    paddingLeft: 10,
-    color: COLORS.Lightning900 ,
+    paddingLeft: 8,
+    fontWeight: '400',
+    color: COLORS.Lightning900,
   },
   OccupiedCheckBox: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingTop: 15,
   },
+  container: {
+    paddingTop: 10,
+  },
   conditionHeading: {
     fontSize: 14,
     fontWeight: '600',
     color: COLORS.black,
     paddingBottom: 10,
+    paddingTop: 10
   },
   RoomStatusHeading: {
     fontSize: 14,
@@ -307,7 +329,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.fog,
     borderRadius: 4,
     width: '100%',
-  
   },
   ConditionDropDownBar: {
     justifyContent: 'center',
@@ -317,4 +338,39 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     width: '100%',
   },
+  header: {
+    flexDirection: 'row',
+    width: '95%',
+    justifyContent: 'space-between',
+    marginBottom: 8
+  },
+  listContainerRight: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.black,
+    marginLeft: 12,
+  },
+  listContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 18,
+  },
+  listSection: {
+    width: '100%',
+    paddingHorizontal: 13,
+  },
+  customIcon: {
+    height: 15,
+    width: 15,
+  },
+  tickContainer: {
+    width: '5%'
+  }
 });
