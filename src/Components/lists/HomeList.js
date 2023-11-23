@@ -3,8 +3,11 @@ import React, {useState} from 'react';
 import ListHeader from '../headers/ListHeader';
 import ListCard from '../Cards/ListCard/ListCard';
 
-const HomeList = ({name}) => {
+const HomeList = ({name, data}) => {
   const [openList, setOpenList] = useState(false);
+  
+  console.log('Homelist' , data)
+
   return (
     <View style={styles.container}>
       <ListHeader title={name} openList={setOpenList} liststatus={openList} />

@@ -1,15 +1,16 @@
 import {ImageBackground, StyleSheet, Text, StatusBar, View} from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import BackgroundImage from '../../../assets/backgroundImage/backgroundImage.png';
 import HomeHeader from '../../Components/headers/HomeHeader';
 import {getDateWithoutNames, getDatewithNames} from '../../Services/Date';
 import {COLORS} from '../../../assets/colors/Colors';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import CustomizeList from '../../Components/lists/CustomizeLists/CustomizeList';
+import {useGetHousekeepingStatus} from '../../Hooks/api'
+import {useSelector} from 'react-redux'
+import { RootState } from '../../store/store';
 
 import HomeList from '../../Components/lists/HomeList';
-import SortList from '../../Components/lists/CustomizeLists/SortList';
-import PropertiesList from '../../Components/lists/CustomizeLists/PropertiesList';
 
 
 const HomeScreen = () => {
@@ -18,9 +19,12 @@ const HomeScreen = () => {
   const [isLakeside, setIsLakeside] = useState(false);
 
   const date = getDatewithNames();
-  const CLrbSheetRef = useRef();
-  const SortListrbSheetRef = useRef();
-  const PropertiesListrbSheetRef = useRef();
+  const CLrbSheetRef = useRef()
+  const {currentHousekeepingstatus} = useSelector((state)=> state.housekeeping)
+  console.log('HomeScreen: ', currentHousekeepingstatus)
+
+
+
   return (
     <ImageBackground
       source={BackgroundImage}
@@ -30,9 +34,9 @@ const HomeScreen = () => {
         <Text style={styles.dateText}>
           {date.day}, {date.month} {date.date}
         </Text>
-        <HomeList name={'Coastline Villas'} /> 
-        <HomeList name={'Delta Villas'} />
-        <HomeList name={'Completed'} />
+        <HomeList name={'Coastline Villas'} data={currentHousekeepingstatus}/>
+        <HomeList name={'Delta Villas'} data={currentHousekeepingstatus} />
+        <HomeList name={'Completed'} data={currentHousekeepingstatus} />
       </View>
       <RBSheet
       ref={CLrbSheetRef}
@@ -40,26 +44,10 @@ const HomeScreen = () => {
       height={200}
       customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
       >
-        <CustomizeList rbSheetRef={SortListrbSheetRef} PropertiesListrbSheetRef={PropertiesListrbSheetRef}/>
-
-      </RBSheet>
-      <RBSheet
-      ref={SortListrbSheetRef}
-      animationType='fade'
-      height={400}
-      customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
-      >
-        <SortList rbSheetRef={SortListrbSheetRef}/>
-
-      </RBSheet>
-      <RBSheet
-      ref={PropertiesListrbSheetRef}
-      animationType='slide'
-      height={250}
-      customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
-      >
-        <PropertiesList rbSheetRef={PropertiesListrbSheetRef} setIsCoastline={setIsCoastline} setIsDelta={setIsDelta} setIsLakeside={setIsLakeside} isCoastline={isCoastline}
-         isDelta={isDelta} isLakeside={isLakeside} />
+        
+          <CustomizeList />
+       
+        
 
       </RBSheet>
     </ImageBackground>

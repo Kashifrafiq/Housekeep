@@ -30,7 +30,7 @@ const Stack = createStackNavigator()
 
 const AppStack = () => {
   const { tokenData, getAuthSession, loading } = useAuth()
-  const { properties, isAllowed, fetchUsers } = useUser(true)
+  const { properties, isAllowed, fetchUsers, changeHousekeeping } = useUser(true)
   const { getCurrentLocation } = useLocation()
   const { colors } = useTheme()
 
@@ -118,9 +118,9 @@ const AppStack = () => {
           ) : (
             <Stack.Group>
               <Stack.Screen name={Routes.Main} component={MainStack} />
-              <Stack.Screen name={Routes.CustomizeList} component={CustomizeList} options={{headerShown: false}}/>
-              <Stack.Screen name={Routes.SortList} component={SortList} options={{headerShown: false}}/>
-              <Stack.Screen name={Routes.PropertiesList} component={PropertiesList} options={{headerShown: false}}/>
+           
+
+             
 
             </Stack.Group>
           )}

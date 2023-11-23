@@ -14,11 +14,17 @@ import {
   changeProperties as storeProperties,
   changeCurrentProperty as storeCurrentProperty,
 } from '../store/slices/userSlice'
+import {
+  changeHousekeepingStatus as storeHousekeeping,
+  changeCurrentHousekeepingStatus as storeCurrentHouskeeping
+  
+} from '../store/slices/HouskeepingSlice'
 import { changeAllowed } from '../store/slices/deviceSlice'
-import { getHotels, getUserInfo, getUsers } from './api'
+import { getHotels, getUserInfo, getUsers, useGetHousekeepingStatus } from './api'
 import { useProgress } from '../Components/ProgressHud/ProgressContext'
 import { useInterval } from '.'
 import { refreshTime } from '../models/constants'
+import { HousekeepingStatusProps } from '../models/housekeeping'
 
 export default function useUser(refresh = false) {
   const dispatch = useDispatch()
@@ -26,6 +32,7 @@ export default function useUser(refresh = false) {
     (state: RootState) => state.user,
   )
   const { isAllowed } = useSelector((state: RootState) => state.device)
+  const {housekeepingstatus, currentHousekeepingstatus} = useSelector((state: RootState)=> state.housekeeping)
   const { showProgress, hideProgress } = useProgress()
   const [startInterval, stopInterval] = useInterval()
 
@@ -52,11 +59,26 @@ export default function useUser(refresh = false) {
     [dispatch],
   )
 
+
   const changeProperties = useCallback(
     (pros: PropertyProps[]) => {
       dispatch(storeProperties(pros))
     },
     [dispatch],
+  )
+
+  const changeHousekeeping = useCallback(
+    (housekeeping : HousekeepingStatusProps[]) => {
+      dispatch(storeHousekeeping(housekeeping))
+    }, 
+    [dispatch],
+  )
+
+  const changeCurrentHousekeeping = useCallback(
+    (currentHousekeeping : HousekeepingStatusProps[] )=>{
+      dispatch(storeCurrentHouskeeping(currentHousekeeping))
+    }, 
+    [dispatch]
   )
 
   const fetchUsers = useCallback(
@@ -87,16 +109,31 @@ export default function useUser(refresh = false) {
 
         const hotels: PropertyProps[] =
           (await getHotels({ pageNumber: 1, pageSize: 100 })) || []
+          console.log('Result From Api:', hotels);
 
         changeProperties(hotels || [])
+        console.log('Yes:', hotels)
 
         const cProperty = hotels.find(
           h =>
             h?.propertyID?.toString() === filteredUser?.propertyId?.toString(),
         )
+        
         changeCurrentProperty(cProperty!)
 
         changeUserInfo(userInfo)
+
+        const housekeepingStatus: HousekeepingStatusProps[] =  (await useGetHousekeepingStatus()) || []
+
+        const currentHousekeeping: HousekeepingStatusProps[] = housekeepingStatus.filter(k => 
+          k?.housekeeperID?.toString()=== '47287')
+
+          
+          changeCurrentHousekeeping( currentHousekeeping || [])
+
+        changeHousekeeping(housekeepingStatus || [])
+
+
 
         setLoading(false)
         hideProgress()
@@ -136,9 +173,11 @@ export default function useUser(refresh = false) {
     properties,
     currentProperty,
     isAllowed,
+    housekeepingstatus,
     fetchUsers,
     changeCurrentProperty,
     changeAllowPermission,
     changeProperties,
+    changeHousekeeping,
   }
 }
