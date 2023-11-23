@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    width: '100%',
+    width: '95%',
     justifyContent: 'space-between',
     marginBottom: 8
   },  

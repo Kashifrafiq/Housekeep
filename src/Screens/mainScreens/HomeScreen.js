@@ -1,5 +1,5 @@
 import {ImageBackground, StyleSheet, Text, StatusBar, View} from 'react-native';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import BackgroundImage from '../../../assets/backgroundImage/backgroundImage.png';
 import HomeHeader from '../../Components/headers/HomeHeader';
 import {getDateWithoutNames, getDatewithNames} from '../../Services/Date';
@@ -13,6 +13,10 @@ import PropertiesList from '../../Components/lists/CustomizeLists/PropertiesList
 
 
 const HomeScreen = () => {
+  const [isCoastline, setIsCoastline] = useState(false);
+  const [isDelta, setIsDelta] = useState(false);
+  const [isLakeside, setIsLakeside] = useState(false);
+
   const date = getDatewithNames();
   const CLrbSheetRef = useRef();
   const SortListrbSheetRef = useRef();
@@ -54,7 +58,8 @@ const HomeScreen = () => {
       height={250}
       customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
       >
-        <PropertiesList rbSheetRef={PropertiesListrbSheetRef} />
+        <PropertiesList rbSheetRef={PropertiesListrbSheetRef} setIsCoastline={setIsCoastline} setIsDelta={setIsDelta} setIsLakeside={setIsLakeside} isCoastline={isCoastline}
+         isDelta={isDelta} isLakeside={isLakeside} />
 
       </RBSheet>
     </ImageBackground>
