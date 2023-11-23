@@ -11,6 +11,8 @@ import {useSelector} from 'react-redux'
 import { RootState } from '../../store/store';
 
 import HomeList from '../../Components/lists/HomeList';
+import SortList from '../../Components/lists/CustomizeLists/SortList';
+import PropertiesList from '../../Components/lists/CustomizeLists/PropertiesList';
 
 
 const HomeScreen = () => {
@@ -19,11 +21,11 @@ const HomeScreen = () => {
   const [isLakeside, setIsLakeside] = useState(false);
 
   const date = getDatewithNames();
-  const CLrbSheetRef = useRef()
+  const CLrbSheetRef = useRef();
+  const rbSheetRef = useRef();
+  const PropertiesListrbSheetRef = useRef();
   const {currentHousekeepingstatus} = useSelector((state)=> state.housekeeping)
   console.log('HomeScreen: ', currentHousekeepingstatus)
-
-
 
   return (
     <ImageBackground
@@ -45,10 +47,29 @@ const HomeScreen = () => {
       customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
       >
         
-          <CustomizeList />
-       
+          <CustomizeList rbSheetRef={rbSheetRef} PropertiesListrbSheetRef={PropertiesListrbSheetRef} />
+      
+      </RBSheet>
+      <RBSheet
+      ref={rbSheetRef}
+      animationType='slide'
+      height={400}
+      customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
+      >
         
-
+          <SortList rbSheetRef={rbSheetRef} />
+      
+      </RBSheet>
+      <RBSheet
+      ref={PropertiesListrbSheetRef}
+      animationType='slide'
+      height={300}
+      customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
+      >
+        
+          <PropertiesList rbSheetRef={PropertiesListrbSheetRef} isCoastline={isCoastline} isDelta={isDelta} isLakeside={isLakeside} 
+          setIsCoastline={setIsCoastline} setIsDelta={setIsDelta} setIsLakeside={setIsLakeside}/>
+      
       </RBSheet>
     </ImageBackground>
   );
@@ -64,7 +85,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Adjust the opacity (fourth value) as needed
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', 
   },
 
   dateText: {
