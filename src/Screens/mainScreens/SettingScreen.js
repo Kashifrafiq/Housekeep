@@ -6,12 +6,12 @@ import Icon from 'react-native-vector-icons/Feather'
 import FIcon from '../../../assets/icons/information.png'
 import { COLORS } from '../../../assets/colors/Colors'
 
-const SettingScreen = () => {
+const SettingScreen = ({settingScreenRef}) => {
    const name= "Alice Parker"
    const email = 'aparker@email.com'
   return (
     <View style={styles.container}>
-      <SettingHeader />
+      <SettingHeader settingRef={settingScreenRef} />
       <ProfileImage large={true}/>
       <View style={styles.textContainer}>
         <Text style={styles.name}>{name}</Text>

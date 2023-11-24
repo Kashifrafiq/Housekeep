@@ -6,11 +6,11 @@ import { navigate } from '../../Navigation/navigationUtils'
 import Routes from '../../Navigation/routesNames'
 
 
-const SettingHeader = () => {
+const SettingHeader = ({settingRef}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Settings</Text>
-      <Pressable onPress={()=> navigate(Routes.Home)}>
+      <Pressable onPress={()=> settingRef.current.close()}>
          <Icon name= {'cross'} size={24} color={COLORS.black} />
       </Pressable>
     </View>

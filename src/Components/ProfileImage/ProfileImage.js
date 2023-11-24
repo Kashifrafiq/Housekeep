@@ -5,11 +5,11 @@ import Routes from '../../Navigation/routesNames'
 import { navigate } from '../../Navigation/navigationUtils'
 
 
-const ProfileImage = ({large}) => {
+const ProfileImage = ({large, settingScreenRef}) => {
 
   name= 'AP'
   return (
-    <Pressable onPress={()=> navigate(Routes.Settings)}
+    <Pressable onPress={()=> settingScreenRef.current.open()}
     style={large? styles.large : styles.small}>
       <Text style={[styles.text, large? {fontSize: 28} : {fontSize: 18}]}>{name}</Text>
     </Pressable>

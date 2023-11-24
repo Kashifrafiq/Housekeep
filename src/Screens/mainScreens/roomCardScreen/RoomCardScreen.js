@@ -4,7 +4,8 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  View
+  View,
+  Platform, StatusBar
 } from 'react-native';
 // import CheckBox from 'react-native-check-box';
 import { COLORS } from '../../../../assets/colors/Colors';
@@ -19,7 +20,7 @@ import CheckBox from '@react-native-community/checkbox';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import DownIcon from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Feather';
-import { navigate } from '../../../Navigation/navigationUtils';
+import { goBack, navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
 import { useRoute } from '@react-navigation/native';
 
@@ -42,10 +43,10 @@ const RoomCardScreen = ({}) => {
 
   console.log('item: ', item)
   const onPressMyDay = () => {
-    navigate(Routes.Home)
+   goBack();
   }
   return (
-    <View style={{ padding: 15 }}>
+    <View style={[{ padding: 15 },  Platform.OS === 'ios' && styles.iOSMargin]}>
       {/* <RoomCard /> */}
       <View style={styles.header}>
         <View style={styles.listContainerRight}>
@@ -378,5 +379,8 @@ const styles = StyleSheet.create({
   },
   tickContainer: {
     width: '5%'
-  }
+  },
+  iOSMargin: {
+    paddingTop: StatusBar.currentHeight || 20,
+  },
 });

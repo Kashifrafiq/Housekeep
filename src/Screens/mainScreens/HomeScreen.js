@@ -1,4 +1,4 @@
-import {ImageBackground, StyleSheet, Text, StatusBar, View} from 'react-native';
+import {ImageBackground, StyleSheet, Text, StatusBar, View, Platform, Dimensions} from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import BackgroundImage from '../../../assets/backgroundImage/backgroundImage.png';
 import HomeHeader from '../../Components/headers/HomeHeader';
@@ -15,6 +15,10 @@ import SortList from '../../Components/lists/CustomizeLists/SortList';
 import PropertiesList from '../../Components/lists/CustomizeLists/PropertiesList';
 import { FlatList, ScrollView, SectionList } from 'native-base';
 import { useUser } from '../../Hooks';
+import SettingScreen from './SettingScreen';
+
+
+const {height} = Dimensions.get('screen')
 
 
 const HomeScreen = () => {
@@ -24,8 +28,10 @@ const HomeScreen = () => {
  
 
   const date = getDatewithNames();
+
   const CLrbSheetRef = useRef();
   const rbSheetRef = useRef();
+  const settingScreenRef = useRef();
   const PropertiesListrbSheetRef = useRef();
   const {currentHousekeepingstatus, housekeepingstatus, completed} = useSelector((state)=> state.housekeeping)
   const [completeList, setCompleteList] = useState([completed])
@@ -43,8 +49,8 @@ console.log('HomeScreen: ', completeList)
     <ImageBackground
       source={BackgroundImage}
       style={{flex: 1, resizeMode: 'cover', justifyContent: 'center'}}>
-      <View style={styles.overlay}>
-        <HomeHeader RbsheetReference={CLrbSheetRef} />
+      <View style={[styles.overlay,  Platform.OS === 'ios' && styles.iOSMargin]}>
+        <HomeHeader RbsheetReference={CLrbSheetRef} settingScreenRef={settingScreenRef} />
         <Text style={styles.dateText}>
           {date.day}, {date.month} {date.date}
         </Text>
@@ -116,6 +122,17 @@ console.log('HomeScreen: ', completeList)
           setIsCoastline={setIsCoastline} setIsDelta={setIsDelta} setIsLakeside={setIsLakeside}/>
       
       </RBSheet>
+      <RBSheet
+      ref={settingScreenRef}
+      animationType='slide'
+      height={height-40}
+      customStyles={{container:{borderTopLeftRadius: 16, borderTopRightRadius: 16 }}}
+      >
+        <SettingScreen settingScreenRef={settingScreenRef} />
+        
+          
+      
+      </RBSheet>
     </ImageBackground>
   );
 };
@@ -140,5 +157,8 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 18,
     color: COLORS.white,
+  },
+  iOSMargin: {
+    paddingTop: StatusBar.currentHeight || 20, 
   },
 });

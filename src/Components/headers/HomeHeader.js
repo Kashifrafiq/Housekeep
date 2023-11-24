@@ -23,7 +23,7 @@ const SettingIcon = ({RbSheetRef}) => {
     )
 }
 
-const HomeHeader = ({RbsheetReference}) => {
+const HomeHeader = ({RbsheetReference, settingScreenRef}) => {
   return (
     <View style={styles.mainContainer}>
 
@@ -34,7 +34,7 @@ const HomeHeader = ({RbsheetReference}) => {
 
       <View style={ styles.rightcontainer}>
         
-        <ProfileImage large={false} />
+        <ProfileImage large={false} settingScreenRef={settingScreenRef}  />
         <InformationIcon />
         <SettingIcon RbSheetRef={RbsheetReference} />
         
