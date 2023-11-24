@@ -1,7 +1,7 @@
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
-import {COLORS} from '../../../../assets/colors/Colors';
+import { COLORS } from '../../../../assets/colors/Colors';
 import ImportanceIcon from '../../../../assets/icons/importance.png';
 import AlphabeticallyIcon from '../../../../assets/icons/Alphabetically.png';
 import FrontdeskIcon from '../../../../assets/icons/Frontdesk.png';
@@ -10,20 +10,20 @@ import ManuallyIcon from '../../../../assets/icons/Manually.png';
 import { navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
 
-const SortList = ({rbSheetRef}) => {
-    const onPressCustomizeList = () => {
-      rbSheetRef.current.close()
-    }
-      
+const SortList = ({ rbSheetRef }) => {
+  const onPressCustomizeList = () => {
+    rbSheetRef.current.close()
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.listContainerRight}>
-            <Pressable onPress={onPressCustomizeList}>
+          <Pressable onPress={onPressCustomizeList}>
             <Icon name={'chevron-small-left'} size={24} color={COLORS.black} />
-            </Pressable>
-            <Text style={styles.headerText}>Sort by</Text>
-        </View> 
+          </Pressable>
+          <Text style={styles.headerText}>Sort by</Text>
+        </View>
         <Pressable onPress={onPressCustomizeList}>
           <Icon name={'cross'} size={24} color={COLORS.black} />
         </Pressable>
@@ -51,7 +51,7 @@ const SortList = ({rbSheetRef}) => {
             <Text style={styles.listText}>Alphabetically / Numerically</Text>
           </View>
         </Pressable>
-        
+
         <Pressable style={styles.listContainer}>
           <View style={styles.listContainerRight}>
             <Image
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     width: '95%',
     justifyContent: 'space-between',
     marginBottom: 8
-  },  
+  },
   headerText: {
     fontSize: 18,
     fontWeight: '600',
@@ -135,14 +135,14 @@ const styles = StyleSheet.create({
     height: 15,
     width: 15,
   },
-  listTextBold:{
+  listTextBold: {
     fontSize: 18,
     fontWeight: '400',
     color: COLORS.black,
     marginLeft: 12,
     fontWeight: '700'
   },
-  listText:{
+  listText: {
     fontSize: 18,
     fontWeight: '400',
     color: COLORS.black,

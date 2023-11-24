@@ -1,13 +1,13 @@
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
-import {COLORS} from '../../../../assets/colors/Colors';
+import { COLORS } from '../../../../assets/colors/Colors';
 import SortIcon from '../../../../assets/icons/sort.png';
 import propertyIcon from '../../../../assets/icons/property.png'
 import { navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
 
-const CustomizeList = ({rbSheetRef, PropertiesListrbSheetRef}) => {
+const CustomizeList = ({ rbSheetRef, PropertiesListrbSheetRef, myDaySheetRef }) => {
 
   const onPressSort = () => {
     rbSheetRef.current.open()
@@ -15,15 +15,19 @@ const CustomizeList = ({rbSheetRef, PropertiesListrbSheetRef}) => {
   const onPressProperties = () => {
     PropertiesListrbSheetRef.current.open()
   }
+  const onPressMyDay = () => {
+    myDaySheetRef.current.close()
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Customize List</Text>
-        <Pressable >
+        <Pressable onPress={onPressMyDay}>
           <Icon name={'cross'} size={24} color={COLORS.black} />
         </Pressable>
       </View>
+      <View style={styles.line}></View>
       <View style={styles.listSection}>
         <Pressable style={styles.listContainer} onPress={onPressSort}>
           <View style={styles.listContainerRight}>
@@ -48,7 +52,7 @@ const CustomizeList = ({rbSheetRef, PropertiesListrbSheetRef}) => {
           </View>
           <Icon name={'chevron-small-right'} size={24} color={COLORS.black} />
         </Pressable>
-        
+
       </View>
     </View>
   );
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
-  },  
+  },
   headerText: {
     fontSize: 18,
     fontWeight: '600',
@@ -74,6 +78,7 @@ const styles = StyleSheet.create({
   },
   listSection: {
     width: '100%',
+    marginTop: -10,
   },
   listContainer: {
     flexDirection: 'row',
@@ -87,12 +92,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center'
   },
-
+  line: {
+    borderBottomColor: '#DDE0E4',
+    borderBottomWidth: 1,
+    marginVertical: 15,
+  },
   customIcon: {
     height: 15,
     width: 15,
   },
-  listText:{
+  listText: {
     fontSize: 18,
     fontWeight: '400',
     color: COLORS.black,

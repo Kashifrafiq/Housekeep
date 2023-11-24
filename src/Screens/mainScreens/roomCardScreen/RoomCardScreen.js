@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Image,
   Pressable,
@@ -24,9 +24,9 @@ import { goBack, navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
 import { useRoute } from '@react-navigation/native';
 
-const RoomCardScreen = ({}) => {
+const RoomCardScreen = ({ }) => {
   const route = useRoute()
-  const {item} = route.params
+  const { item } = route.params
 
   const [isChecked, setIsChecked] = useState(item?.doNotDisturb)
   const [isOccupied, setIsOccupied] = useState(item?.roomOccupied);
@@ -39,7 +39,11 @@ const RoomCardScreen = ({}) => {
   const openBottomSheet = () => {
     bottomSheetRef.current.open();
   };
-
+  useEffect(() => {
+    if (item?.roomCondition === 'clean') {
+      setIsDirty(false)
+    } else { setIsDirty(true) }
+  }, [])
 
   console.log('item: ', item)
   const onPressMyDay = () => {
@@ -62,7 +66,7 @@ const RoomCardScreen = ({}) => {
       </View>
       <View style={{ paddingTop: 8 }}>
 
-        <RoomCard />
+        <RoomCard roomName={item?.roomName} roomTypeName={item?.roomTypeName} />
       </View>
       <View style={styles.container}>
         <View style={styles.DoNotDisturbCheckBox}>
