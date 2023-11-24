@@ -21,13 +21,16 @@ import DownIcon from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/Feather';
 import { navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
+import { useRoute } from '@react-navigation/native';
 
-const RoomCardScreen = (myDaySheetRef) => {
+const RoomCardScreen = ({}) => {
+  const route = useRoute()
+  const {item} = route.params
 
-  const [isChecked, setIsChecked] = useState(false)
-  const [isOccupied, setIsOccupied] = useState(true);
+  const [isChecked, setIsChecked] = useState(item?.doNotDisturb)
+  const [isOccupied, setIsOccupied] = useState(item?.roomOccupied);
   const [isDirty, setIsDirty] = useState(true);
-  const RoomComment = 'Shower is broken and in need of repair services.';
+  const RoomComment = item?.roomComments;
   const nightsStand = 4;
   const personCount = 12;
   const childrenCount = 0;
@@ -35,6 +38,9 @@ const RoomCardScreen = (myDaySheetRef) => {
   const openBottomSheet = () => {
     bottomSheetRef.current.open();
   };
+
+
+  console.log('item: ', item)
   const onPressMyDay = () => {
     navigate(Routes.Home)
   }
@@ -198,7 +204,7 @@ const RoomCardScreen = (myDaySheetRef) => {
         </View>
 
         <View style={styles.TurnOverOptions}>
-          <Text style={styles.turnoverText}>TurnOver</Text>
+          <Text style={styles.turnoverText}>{item?.frontdeskStatus}</Text>
           <View style={styles.nightsStandCounter}>
             <Text style={styles.nightsstandText}>{nightsStand}</Text>
             <Image style={styles.nightsstandIcon} source={nightsStandIcon} />

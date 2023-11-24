@@ -8,22 +8,35 @@ import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import NotePoint from '../../../../assets/icons/pointYellow.png';
 import { navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
+import { useDispatch } from 'react-redux';
+import {
+  changeCompleted as storeCompleted
+} from '../../../store/slices/HouskeepingSlice'
+import { useNavigation } from '@react-navigation/native';
 
-const ListCard = ({title, status, doNotDisturb, roomOccupied}) => {
+
+
+const ListCard = ({title, status, doNotDisturb, roomOccupied , item, note}) => {
+
+  const dispatch = useDispatch();
+  const navigation = useNavigation()
  
 
   const [turnover, setTurnover] = useState(true);
-  const [completed, setCompleted] = useState(false);
-  const [notes, setNotes] = useState(true);
+  const [completed, setComplete] = useState(false);
+  const [notes, setNotes] = useState(note);
 
   const onPressStar = () => {
     setTurnover(!turnover);
   };
-  const onPressCheck = () => {
-    setCompleted(!completed);
+  const onPressCheck = ({newitem}) => {
+    console.log(item)
+    
+    dispatch(storeCompleted(item))
+    setComplete(!completed);
   };
   const OnPressNote =() => {
-    navigate(Routes.Housekeeping)
+    navigation.navigate(Routes.Housekeeping, {item: item})
   }
 
   return (
@@ -35,7 +48,7 @@ const ListCard = ({title, status, doNotDisturb, roomOccupied}) => {
           : {backgroundColor: COLORS.white},
       ]}>
       <View style={styles.leftContainer}>
-        <Pressable onPress={onPressCheck} style={styles.checkContainer}>
+        <Pressable onPress={()=>onPressCheck(item)} style={styles.checkContainer}>
           {completed ? (
             <Icon1 name={'check'} size={12} color={COLORS.Lightning900} />
           ) : null}

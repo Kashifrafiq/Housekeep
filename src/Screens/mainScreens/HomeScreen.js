@@ -13,19 +13,31 @@ import { RootState } from '../../store/store';
 import HomeList from '../../Components/lists/HomeList';
 import SortList from '../../Components/lists/CustomizeLists/SortList';
 import PropertiesList from '../../Components/lists/CustomizeLists/PropertiesList';
-import { ScrollView } from 'native-base';
+import { FlatList, ScrollView, SectionList } from 'native-base';
+import { useUser } from '../../Hooks';
 
 
 const HomeScreen = () => {
   const [isCoastline, setIsCoastline] = useState(false);
   const [isDelta, setIsDelta] = useState(false);
   const [isLakeside, setIsLakeside] = useState(false);
+ 
 
   const date = getDatewithNames();
   const CLrbSheetRef = useRef();
   const rbSheetRef = useRef();
   const PropertiesListrbSheetRef = useRef();
-  const {currentHousekeepingstatus, housekeepingstatus} = useSelector((state)=> state.housekeeping)
+  const {currentHousekeepingstatus, housekeepingstatus, completed} = useSelector((state)=> state.housekeeping)
+  const [completeList, setCompleteList] = useState([completed])
+  const {properties} = useUser()
+
+
+
+  useEffect(()=>{
+   
+console.log('HomeScreen: ', completeList)
+
+  }, [completeList])
  
   return (
     <ImageBackground
@@ -37,10 +49,39 @@ const HomeScreen = () => {
           {date.day}, {date.month} {date.date}
         </Text>
         <ScrollView>
+          {
+          properties.map( e => <HomeList name={e.propertyName} data={housekeepingstatus}   />)
+          
+        }
+          <HomeList name={'Completed'} data={completeList} />
+        </ScrollView>
+        
+
+
+
+        {/* <SectionList 
+        sections={array}
+        renderSectionHeader={({section: {title}})=>{
+          return(
+             <Text style={styles.header}>{title}</Text>
+          )
+         
+        }}
+
+        renderItem={({item})=>{
+          return(
+            <Text>{item.roomName}</Text>
+          )
+        }
+      }
+        /> */}
+        
+
+        {/* <ScrollView>
         <HomeList name={'Coastline Villas'} data={housekeepingstatus}/>
         <HomeList name={'Delta Villas'} data={currentHousekeepingstatus} />
         <HomeList name={'Completed'} data={currentHousekeepingstatus} />
-        </ScrollView>
+        </ScrollView> */}
         
         
       </View>
@@ -91,7 +132,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.7)', 
   },
-
+  header: {
+    fontSize: 32,
+    backgroundColor: '#fff',
+  },
   dateText: {
     fontWeight: '400',
     fontSize: 18,

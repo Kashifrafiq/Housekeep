@@ -21,8 +21,7 @@ export default ListHeader;
 
 const styles = StyleSheet.create({
   container: {
-    width: '30%',
-    height: 20,
+    width:'40%',
     backgroundColor: COLORS.fog,
     borderRadius: 4,
     flexDirection: 'row',

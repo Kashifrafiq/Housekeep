@@ -20,11 +20,12 @@ import {
   
 } from '../store/slices/HouskeepingSlice'
 import { changeAllowed } from '../store/slices/deviceSlice'
-import { getHotels, getUserInfo, getUsers, useGetHousekeepingStatus } from './api'
+import { getHotels, getUserInfo, getUsers, useGetHousekeepingStatus, useGetRooms } from './api'
 import { useProgress } from '../Components/ProgressHud/ProgressContext'
 import { useInterval } from '.'
 import { refreshTime } from '../models/constants'
 import { HousekeepingStatusProps } from '../models/housekeeping'
+import { RoomProps } from '../models/room'
 
 export default function useUser(refresh = false) {
   const dispatch = useDispatch()
@@ -32,7 +33,7 @@ export default function useUser(refresh = false) {
     (state: RootState) => state.user,
   )
   const { isAllowed } = useSelector((state: RootState) => state.device)
-  const {housekeepingstatus, currentHousekeepingstatus} = useSelector((state: RootState)=> state.housekeeping)
+  const {housekeepingstatus, currentHousekeepingstatus, completed} = useSelector((state: RootState)=> state.housekeeping)
   const { showProgress, hideProgress } = useProgress()
   const [startInterval, stopInterval] = useInterval()
 
@@ -134,6 +135,9 @@ export default function useUser(refresh = false) {
           changeCurrentHousekeeping( currentHousekeeping || [])
 
         changeHousekeeping(housekeepingStatus || [])
+
+        // const currentRooms: RoomProps[]= (await useGetRooms()) || []
+        // console.log('Rooms: ', currentRooms.map( e => console.log(e)))
 
 
 

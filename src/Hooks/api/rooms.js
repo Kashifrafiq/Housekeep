@@ -3,13 +3,24 @@ import { useMutation, useQuery } from 'react-query'
 
 import { apiQueryContext } from '../../Services/AxiosService'
 
+
 export const useGetRooms = (key, params, options) => {
   const { get } = apiQueryContext
-  return useQuery(
-    ['getRooms', key],
-    () => get(`${MFD_API_HOST}/getRooms`, { params }),
-    options,
-  )
+
+  return new Promise( async(resolve, reject)=>{
+    try{
+      const result = await get(`${MFD_API_HOST}/getRooms`, { params })
+      resolve(result?.data)
+    }catch(error){
+      reject(error)
+    }
+
+  })
+  // return useQuery(
+  //   ['getRooms', key],
+  //   () => get(`${MFD_API_HOST}/getRooms`, { params }),
+  //   options,
+  // )
 }
 
 export const useGetRoomTypes = (key, params, options) => {
