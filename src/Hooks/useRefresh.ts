@@ -7,7 +7,7 @@ import { useProgress } from '../Components/ProgressHud/ProgressContext'
 import { changeRoomTypes } from '../store/slices/reservationSlice'
 import { RoomTypesProps } from '../models/room'
 import Reservations from '../Services/Reservations'
-import { useInterval } from '.'
+import { useInterval, useUser } from '.'
 import { refreshTime } from '../models/constants'
 import {
   HousekeepersProps,
@@ -17,6 +17,7 @@ import { changeHousekeepers } from '../store/slices/deviceSlice'
 
 export default function useRefresh(enabled: boolean) {
   const dispatch = useDispatch()
+  const {user} = useUser(true) 
   const { reservations: storedReservations } = useSelector(
     (state: RootState) => state.reservation,
   )

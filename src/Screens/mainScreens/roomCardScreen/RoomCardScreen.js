@@ -23,32 +23,50 @@ import Icon from 'react-native-vector-icons/Feather';
 import { goBack, navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
 import { useRoute } from '@react-navigation/native';
+import {usePostHousekeepingStatus, useGetReservations} from '../../../Hooks/api'
 
 const RoomCardScreen = ({ }) => {
   const route = useRoute()
   const { item } = route.params
+  const roomID = item.roomID
+  const housekeepingStatusUpdate = usePostHousekeepingStatus()
+  const resevervation =  useGetReservations({ 
+    status: 'checked_in',
+    roomID: roomID
+  })
 
   const [isChecked, setIsChecked] = useState(item?.doNotDisturb)
   const [isOccupied, setIsOccupied] = useState(item?.roomOccupied);
   const [isDirty, setIsDirty] = useState(true);
+  const [children, setchildren] = useState(0);
+  const [adult, setAdult] = useState(0);
   const RoomComment = item?.roomComments;
   const nightsStand = 4;
-  const personCount = 12;
-  const childrenCount = 0;
   const bottomSheetRef = useRef();
+
+
   const openBottomSheet = () => {
     bottomSheetRef.current.open();
   };
+
   useEffect(() => {
+    
     if (item?.roomCondition === 'clean') {
       setIsDirty(false)
     } else { setIsDirty(true) }
+
+    resevervation.then(res => {
+      console.log('Res:', res[0].adults)
+      setAdult(res[0]?.adults)
+      setchildren(res[0]?.children)
+    })
   }, [])
 
-  console.log('item: ', item)
+  console.log('item: ', item?.roomID)
   const onPressMyDay = () => {
    goBack();
   }
+  
   return (
     <View style={[{ padding: 15 },  Platform.OS === 'ios' && styles.iOSMargin]}>
       {/* <RoomCard /> */}
@@ -152,7 +170,13 @@ const RoomCardScreen = ({ }) => {
               }}>
             </View>
             <View style={styles.listSection}>
-              <Pressable style={styles.listContainer} onPress={() => setIsDirty(false)}>
+              <Pressable style={styles.listContainer} onPress={() =>{
+                setIsDirty(false)
+                housekeepingStatusUpdate.mutate({
+                  roomID: item.roomID,
+                  roomCondition: "clean"
+                })
+                } }>
                 {
                   <View style={styles.listContainerRight}>
                     <View style={styles.tickContainer} >
@@ -175,7 +199,14 @@ const RoomCardScreen = ({ }) => {
                   </View>
                 }
               </Pressable>
-              <Pressable style={styles.listContainer} onPress={() => setIsDirty(true)}>
+              <Pressable style={styles.listContainer} onPress={() => {
+                setIsDirty(true)
+                housekeepingStatusUpdate.mutate({
+                  roomID: item.roomID,
+                  roomCondition: "clean"
+                })
+
+              }}>
                 {
                   <View style={styles.listContainerRight}>
                     <View style={styles.tickContainer} >
@@ -215,11 +246,11 @@ const RoomCardScreen = ({ }) => {
             <Image style={styles.nightsstandIcon} source={nightsStandIcon} />
           </View>
           <View style={styles.personCount}>
-            <Text style={styles.nightsstandText}>{personCount}</Text>
+            <Text style={styles.nightsstandText}>{adult}</Text>
             <Image style={styles.nightsstandIcon} source={personCountIcon} />
           </View>
           <View style={styles.childrenCount}>
-            <Text style={styles.nightsstandText}>{childrenCount}</Text>
+            <Text style={styles.nightsstandText}>{children}</Text>
             <Image style={styles.nightsstandIcon} source={childrenCountIcon} />
           </View>
         </View>

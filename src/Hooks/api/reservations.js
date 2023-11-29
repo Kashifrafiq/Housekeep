@@ -40,13 +40,23 @@ export const useGetReservation = params => {
   )
 }
 
-export const useGetReservations = (key, params, options = {}) => {
+export const useGetReservations = params => {
   const { get } = apiQueryContext
-  return useQuery(
-    ['getReservations', key],
-    () => get(`${MFD_API_HOST}/getReservations`, { params }),
-    options,
-  )
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      const result = await get(`${MFD_API_HOST}/getReservations`, { params})
+      resolve(result?.data|| [])
+    } catch (error) {
+      console.error(error)
+      reject(error)
+    }
+  })
+  // return useQuery(
+  //   ['getReservations', key],
+  //   () => get(`${MFD_API_HOST}/getReservations`, { params }),
+  //   options,
+  // )
 }
 
 export const useGetReservationNotes = (params, options) => {

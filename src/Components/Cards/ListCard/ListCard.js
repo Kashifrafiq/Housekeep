@@ -1,5 +1,5 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {COLORS} from '../../../../assets/colors/Colors';
 import NoteIcon from '../../../../assets/icons/note.png';
 import Starfill from '../../../../assets/icons/starfill.png';
@@ -13,28 +13,62 @@ import {
   changeCompleted as storeCompleted
 } from '../../../store/slices/HouskeepingSlice'
 import { useNavigation } from '@react-navigation/native';
+import {usePostHousekeepingStatus} from '../../../Hooks/api'
+import { useRefresh, useUser } from '../../../Hooks';
+import {useProgress} from '../../ProgressHud/ProgressContext'
 
 
 
-const ListCard = ({title, status, doNotDisturb, roomOccupied , item, note}) => {
+const ListCard = ({title, status, doNotDisturb, roomOccupied , item, note, setRelaod}) => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation()
- 
-
+  const housekeepingStatusUpdate = usePostHousekeepingStatus()
+  const {showProgress, hideProgress} = useProgress()
+  const {fetchUsers} = useUser()
+  const [refreshClicked, setRefreshClicked] = useState(false);
   const [turnover, setTurnover] = useState(true);
   const [completed, setComplete] = useState(false);
   const [notes, setNotes] = useState(note);
 
+  useEffect(()=>{
+    if(note === ''){
+      setNotes(false);
+    }else{
+      setNotes(true);
+    }
+  
+  }, [])
+
   const onPressStar = () => {
     setTurnover(!turnover);
-  };
-  const onPressCheck = ({newitem}) => {
-    console.log(item)
     
-    dispatch(storeCompleted(item))
-    setComplete(!completed);
   };
+
+  const onPressCheck = () => {
+   
+    
+    
+   
+  
+    
+   
+    
+    housekeepingStatusUpdate.mutate({
+      roomID: item.roomID,
+      roomCondition: "clean"
+    })
+    
+   
+    fetchUsers(true)
+    
+    
+   
+  };
+
+  
+
+  
   const OnPressNote =() => {
     navigation.navigate(Routes.Housekeeping, {item: item})
   }
@@ -48,7 +82,7 @@ const ListCard = ({title, status, doNotDisturb, roomOccupied , item, note}) => {
           : {backgroundColor: COLORS.white},
       ]}>
       <View style={styles.leftContainer}>
-        <Pressable onPress={()=>onPressCheck(item)} style={styles.checkContainer}>
+        <Pressable onPress={onPressCheck} style={styles.checkContainer}>
           {completed ? (
             <Icon1 name={'check'} size={12} color={COLORS.Lightning900} />
           ) : null}
@@ -76,7 +110,7 @@ const ListCard = ({title, status, doNotDisturb, roomOccupied , item, note}) => {
                   }
                 : null,
             ]}>
-            { roomOccupied ? `Occupied`: null} {doNotDisturb ? `& Do not disturb` : null }
+            {roomOccupied && doNotDisturb ? 'Occupied & Do not disturb' : roomOccupied ? 'Occupied' : doNotDisturb ? 'Do not disturb' : null}
           </Text>
           <Text style={styles.status}>{status}</Text>
         </View>
@@ -84,7 +118,10 @@ const ListCard = ({title, status, doNotDisturb, roomOccupied , item, note}) => {
       <View style={styles.rightConatiner}>
         <Pressable onPress={OnPressNote}>
           <Image source={NoteIcon} style={styles.icon} />
-          <Image source={NotePoint} style={styles.notepoint} />
+          {
+            notes?  <Image source={NotePoint} style={styles.notepoint} /> : null
+          }
+          
         </Pressable>
         
         <Pressable onPress={onPressStar}>

@@ -20,12 +20,14 @@ import {
   
 } from '../store/slices/HouskeepingSlice'
 import { changeAllowed } from '../store/slices/deviceSlice'
-import { getHotels, getUserInfo, getUsers, useGetHousekeepingStatus, useGetRooms } from './api'
+import { getHotels, getUserInfo, getUsers, useGetHousekeepingStatus, useGetRooms, useGetReservations, getReservation } from './api'
 import { useProgress } from '../Components/ProgressHud/ProgressContext'
 import { useInterval } from '.'
 import { refreshTime } from '../models/constants'
 import { HousekeepingStatusProps } from '../models/housekeeping'
-import { RoomProps } from '../models/room'
+import { RoomProps, RoomTypesProps } from '../models/room'
+import { ReservationInterface } from '../store/slices/reservationSlice'
+import { ReservationProps } from '../models/reservation'
 
 export default function useUser(refresh = false) {
   const dispatch = useDispatch()
@@ -116,11 +118,43 @@ export default function useUser(refresh = false) {
 
         
 
+
+
+        
+
         const cProperty = hotels.find(
           h =>
             h?.propertyID?.toString() === filteredUser?.propertyId?.toString(),
         )
-        console.log('Yes:', hotels)
+
+
+        // const reservation: ReservationProps[] = (await useGetReservations({
+        //   status: 'checked_in',
+        //   roomName: '563374-1'})) || []
+        //    console.log('reservation:', reservation)
+
+        //  const creservation: ReservationProps [] = (await getReservation({
+          
+        //   reservationID: '0868206565471'})) || []
+        //      console.log('reservationssasa:', creservation)
+
+
+
+
+
+       
+        const rooms: RoomTypesProps[] = (await useGetRooms())|| []
+        // console.log('Rooms: ', rooms)
+
+
+        const cRooms = rooms.find(
+          r => r.propertyID?.toString() === cProperty?.propertyID?.toString(),
+        )
+        // console.log(cRooms)
+        
+       
+
+       
         
         changeCurrentProperty(cProperty!)
 
@@ -128,13 +162,30 @@ export default function useUser(refresh = false) {
 
         const housekeepingStatus: HousekeepingStatusProps[] =  (await useGetHousekeepingStatus()) || []
 
-        const currentHousekeeping: HousekeepingStatusProps[] = housekeepingStatus.filter(k => 
+        const currentHousekeeping: HousekeepingStatusProps[] = housekeepingStatus.filter( k => 
           k?.housekeeperID?.toString()=== '47287')
 
+          if (cRooms) {
+            
           
-          changeCurrentHousekeeping( currentHousekeeping || [])
+            const commonRoomsWithPropertyName = housekeepingStatus
+              .filter(housekeeping =>
+                cRooms.rooms?.some(room =>
+                  housekeeping.roomID?.toString() === room.roomID?.toString()
+                )
+              )
+              .map(item => ({
+                ['propertyName']: cProperty?.propertyName ,
+                ...item,
+              }));
+          
+            // console.log('Common rooms with property name:', commonRoomsWithPropertyName);
+            changeHousekeeping(commonRoomsWithPropertyName || [])
+          }
+          
+        changeCurrentHousekeeping( currentHousekeeping || [])
 
-        changeHousekeeping(housekeepingStatus || [])
+        
 
         // const currentRooms: RoomProps[]= (await useGetRooms()) || []
         // console.log('Rooms: ', currentRooms.map( e => console.log(e)))

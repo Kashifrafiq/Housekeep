@@ -22,6 +22,7 @@ export enum FilterTypes {
 }
 
 export interface HousekeepingStatusProps {
+  propertyID: number
   date?: any
   roomTypeID?: number
   roomTypeName?: string
