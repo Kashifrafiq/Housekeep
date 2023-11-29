@@ -21,7 +21,7 @@ const HomeList = ({ name, data, completeList, setRelaod}) => {
         data={data}
         keyExtractor={(item)=> item.roomID}
         scrollEnabled={false}
-        renderItem={({item })=>{
+        renderItem={({item})=>{
           console.log('This:', item?.roomName)
             
             return completeList ? (

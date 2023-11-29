@@ -64,11 +64,13 @@ const RoomCardScreen = ({ }) => {
 
   console.log('item: ', item?.roomID)
   const onPressMyDay = () => {
-   goBack();
+    goBack();
   }
   
   return (
-    <View style={[{ padding: 15 },  Platform.OS === 'ios' && styles.iOSMargin]}>
+    <View style={[{ padding: 15 }, Platform.OS === 'ios' && styles.iOSMargin]}>
+      <StatusBar
+        barStyle='dark-content' />
       {/* <RoomCard /> */}
       <View style={styles.header}>
         <View style={styles.listContainerRight}>
@@ -91,7 +93,13 @@ const RoomCardScreen = ({ }) => {
           <CheckBox
             disabled={false}
             value={isChecked}
+            boxType="square"
             tintColors={{ true: '#3366FF', false: '#3366FF' }}
+            style={{
+              transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }],
+              height: 35,
+              width: 35,
+            }}
             onValueChange={(newValue) => setIsChecked(newValue)
             }
           />
@@ -101,9 +109,15 @@ const RoomCardScreen = ({ }) => {
           <CheckBox
             disabled={true}
             value={isOccupied}
+            boxType="square"
             tintColors={{ true: '#3366FF', false: '#3366FF' }}
+            style={{
+              transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }],
+              height: 35,
+              width: 35,
+              opacity: 0.50
+            }}
             onValueChange={(newValue1) => setIsOccupied(newValue1)}
-            style={{ opacity: 0.50 }}
           />
           <Text style={styles.DoNotDisturbText}>Occupied</Text>
         </View>
@@ -278,6 +292,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   DoNotDisturbCheckBox: {
+    marginTop: 5,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -416,6 +431,6 @@ const styles = StyleSheet.create({
     width: '5%'
   },
   iOSMargin: {
-    paddingTop: StatusBar.currentHeight || 20,
+    paddingTop: StatusBar.currentHeight || 60,
   },
 });

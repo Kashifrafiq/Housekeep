@@ -47,9 +47,9 @@ const HomeScreen = () => {
 
   useEffect(() => {
     // console.log("HomeScreen: ", housekeepingstatus)
-    const currentRooms = housekeepingstatus.filter( f => f.roomCondition === 'dirty')
+    const currentRooms = housekeepingstatus.filter(f => f.roomCondition === 'dirty')
     setDirtyRooms(currentRooms)
-    const completedRooms = housekeepingstatus.filter( f => f.roomCondition === 'clean')
+    const completedRooms = housekeepingstatus.filter(f => f.roomCondition === 'clean')
     setCompleteList(completedRooms)
     // console.log('curreentRooms Homescreen:' , currentRooms)
   }, [fetchUsers, housekeepingstatus])
@@ -58,6 +58,8 @@ const HomeScreen = () => {
     <ImageBackground
       source={BackgroundImage}
       style={{ flex: 1, resizeMode: 'cover', justifyContent: 'center' }}>
+      <StatusBar
+        barStyle="light-content" />
       <View style={[styles.overlay, Platform.OS === 'ios' && styles.iOSMargin]}>
         <HomeHeader
           RbsheetReference={CLrbSheetRef}
@@ -66,11 +68,14 @@ const HomeScreen = () => {
         <Text style={styles.dateText}>
           {date.day}, {date.month} {date.date}
         </Text>
-        <ScrollView>
-          {properties.map(e => (
-            <HomeList name={e.propertyName} data={dityRooms} completeList={false} setRelaod={setRelaod} />
-          ))}
-          <HomeList name={'Completed'} data={completeList} completeList={true}/>
+        <ScrollView
+          showsVerticalScrollIndicator={false}>
+          {
+            properties.map(e => (
+              <HomeList name={e.propertyName} data={dityRooms} completeList={false} setRelaod={setRelaod} />
+            ))
+          }
+          <HomeList name={'Completed'} data={completeList} completeList={true} />
         </ScrollView>
 
         {/* <SectionList 
@@ -98,7 +103,7 @@ const HomeScreen = () => {
       </View>
       <RBSheet
         ref={CLrbSheetRef}
-        animationType="slide"
+        // animationType="slide"
         height={200}
         customStyles={{
           container: { borderTopLeftRadius: 16, borderTopRightRadius: 16 },
@@ -111,7 +116,7 @@ const HomeScreen = () => {
       </RBSheet>
       <RBSheet
         ref={rbSheetRef}
-        animationType="slide"
+        // animationType="slide"
         height={400}
         customStyles={{
           container: { borderTopLeftRadius: 16, borderTopRightRadius: 16 },
@@ -120,7 +125,7 @@ const HomeScreen = () => {
       </RBSheet>
       <RBSheet
         ref={PropertiesListrbSheetRef}
-        animationType="slide"
+        // animationType="slide"
         height={300}
         customStyles={{
           container: { borderTopLeftRadius: 16, borderTopRightRadius: 16 },
@@ -137,7 +142,7 @@ const HomeScreen = () => {
       </RBSheet>
       <RBSheet
         ref={settingScreenRef}
-        animationType="slide"
+        // animationType="slide"
         height={height - 40}
         customStyles={{
           container: { borderTopLeftRadius: 16, borderTopRightRadius: 16 },
@@ -158,6 +163,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    paddingBottom: 20,
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   header: {
@@ -170,6 +176,6 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   iOSMargin: {
-    paddingTop: StatusBar.currentHeight || 20,
+    paddingTop: StatusBar.currentHeight || 60,
   },
 })
