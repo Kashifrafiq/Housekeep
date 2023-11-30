@@ -121,7 +121,7 @@ const HomeScreen = () => {
         customStyles={{
           container: { borderTopLeftRadius: 16, borderTopRightRadius: 16 },
         }}>
-        <SortList rbSheetRef={rbSheetRef} />
+        <SortList rbSheetRef={rbSheetRef} data={housekeepingstatus} />
       </RBSheet>
       <RBSheet
         ref={PropertiesListrbSheetRef}

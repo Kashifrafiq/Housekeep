@@ -1,5 +1,5 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 import { COLORS } from '../../../../assets/colors/Colors';
 import ImportanceIcon from '../../../../assets/icons/importance.png';
@@ -10,10 +10,43 @@ import ManuallyIcon from '../../../../assets/icons/Manually.png';
 import { navigate } from '../../../Navigation/navigationUtils';
 import Routes from '../../../Navigation/routesNames';
 
-const SortList = ({ rbSheetRef }) => {
+const SortList = ({ rbSheetRef, data }) => {
+  const [selectedItem, setSelectedItem] = useState('Importance')
+
   const onPressCustomizeList = () => {
     rbSheetRef.current.close()
   }
+
+
+  const onPressSortOption = (option) => {
+
+    switch (option) {
+      case 'Importance':
+        setSelectedItem(option)
+        console.log(selectedItem, 'Pressed')
+        break;
+      case 'Alphabetically-Numerically':
+        setSelectedItem(option)
+        console.log(selectedItem, 'Pressed')
+        break;
+
+
+      case 'Frontdesk-Status':
+
+        setSelectedItem(option)
+        console.log(selectedItem, 'Pressed')
+        break;
+
+      case 'Unoccupied':
+        setSelectedItem(option)
+        console.log(selectedItem, 'Pressed')
+        break
+
+
+      default:
+        break;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -30,47 +63,55 @@ const SortList = ({ rbSheetRef }) => {
       </View>
       <View style={styles.line}></View>
       <View style={styles.listSection}>
-        <Pressable style={styles.listContainer}>
+        <Pressable style={styles.listContainer}
+          onPress={() => onPressSortOption('Importance')}
+        >
           <View style={styles.listContainerRight}>
             <Image
               source={ImportanceIcon}
               style={styles.customIcon}
               resizeMode="contain"
             />
-            <Text style={styles.listTextBold}>Importance</Text>
+            <Text style={[selectedItem === 'Importance' ? styles.listTextBold : styles.listText]}>Importance</Text>
           </View>
         </Pressable>
 
-        <Pressable style={styles.listContainer}>
+        <Pressable style={styles.listContainer}
+          onPress={() => onPressSortOption('Alphabetically-Numerically')}
+        >
           <View style={styles.listContainerRight}>
             <Image
               source={AlphabeticallyIcon}
               style={styles.customIcon}
               resizeMode="contain"
             />
-            <Text style={styles.listText}>Alphabetically / Numerically</Text>
+            <Text style={[selectedItem === 'Alphabetically-Numerically' ? styles.listTextBold : styles.listText]}>Alphabetically / Numerically</Text>
           </View>
         </Pressable>
 
-        <Pressable style={styles.listContainer}>
+        <Pressable style={styles.listContainer}
+          onPress={() => onPressSortOption('Frontdesk-Status')}
+        >
           <View style={styles.listContainerRight}>
             <Image
               source={FrontdeskIcon}
               style={styles.customIcon}
               resizeMode="contain"
             />
-            <Text style={styles.listText}>Frontdesk Status</Text>
+            <Text style={[selectedItem === 'Frontdesk-Status' ? styles.listTextBold : styles.listText]}>Frontdesk Status</Text>
           </View>
         </Pressable>
 
-        <Pressable style={styles.listContainer}>
+        <Pressable style={styles.listContainer}
+          onPress={() => onPressSortOption('Unoccupied')}
+        >
           <View style={styles.listContainerRight}>
             <Image
               source={UnoccupiedIcon}
               style={styles.customIcon}
               resizeMode="contain"
             />
-            <Text style={styles.listText}>Unoccupied / Disturb</Text>
+            <Text style={[selectedItem === 'Unoccupied' ? styles.listTextBold : styles.listText]}>Unoccupied / Disturb</Text>
           </View>
         </Pressable>
 
@@ -148,5 +189,5 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     marginLeft: 12,
     width: '100%'
-  }
+  },
 });
