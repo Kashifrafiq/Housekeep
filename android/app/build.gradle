@@ -142,7 +142,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.cloudbeds"
+        applicationId "pos.cloudbeds.housekeepers"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 3
@@ -150,7 +150,7 @@ android {
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         manifestPlaceholders = [
-            // appAuthRedirectScheme: 'com.cloudbeds.oauth'
+            // appAuthRedirectScheme: 'pos.cloudbeds.housekeepers.oauth'
             appAuthRedirectScheme: 'io.identityserver.demo'
         ]
 
